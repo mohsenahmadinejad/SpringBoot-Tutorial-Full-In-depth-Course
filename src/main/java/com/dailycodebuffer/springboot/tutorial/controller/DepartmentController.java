@@ -14,11 +14,14 @@ import java.util.List;
 @RestController
 public class DepartmentController {
 
-    @Autowired
+    private final Logger LOGGER =LoggerFactory.getLogger(DepartmentController.class);
+
+     @Autowired
     private DepartmentService departmentService;
 
     @PostMapping("/departments")
     public Department saveDepartment(@RequestBody Department department){
+        LOGGER.info("inside the saveDepartment ");
         return  departmentService.saveDepartment(department);
     }
 
