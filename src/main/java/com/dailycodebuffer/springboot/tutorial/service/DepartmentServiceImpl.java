@@ -1,6 +1,7 @@
 package com.dailycodebuffer.springboot.tutorial.service;
 
 import com.dailycodebuffer.springboot.tutorial.entity.Department;
+import com.dailycodebuffer.springboot.tutorial.error.DepartmentNotFoundException;
 import com.dailycodebuffer.springboot.tutorial.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,13 @@ public class DepartmentServiceImpl  implements DepartmentService{
    }
 
    @Override
-   public Department fetchDepartmentByID(Long id) {
-      return departmentRepository.findById(id).get();
+   public Department fetchDepartmentByID(Long id) throws DepartmentNotFoundException {
+      Optional<Department> department= departmentRepository.findById(id);
+
+      if(!department.isPresent()){
+         throw  new DepartmentNotFoundException("Department is not available");
+      }
+      return department.get();
    }
 
    @Override
