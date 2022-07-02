@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface DepartmentRepository  extends JpaRepository<Department,Long> {
     public Department findByDepartmentName(String name);
 
+    public Department findByDepartmentNameIgnoreCase(String name);
+
     @Query("select d from Department d where d.departmentCode=:code")
     public Department getDepartmentByDepartmentCode(@Param("code") String code);
 }
