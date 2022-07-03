@@ -1,6 +1,7 @@
 package com.dailycodebuffer.springboot.tutorial.controller;
 
 import com.dailycodebuffer.springboot.tutorial.entity.Department;
+import com.dailycodebuffer.springboot.tutorial.error.DepartmentNotFoundException;
 import com.dailycodebuffer.springboot.tutorial.service.DepartmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(DepartmentController.class)
 class DepartmentControllerTest {
@@ -36,7 +40,7 @@ class DepartmentControllerTest {
     }
 
     @Test
-    void saveDepartment() {
+    void saveDepartment() throws Exception {
         Department inputDepartment=Department.builder().
                 departmentName("IT").
                 departmentAddress("TEHRAN").
@@ -46,12 +50,34 @@ class DepartmentControllerTest {
         Mockito.when(departmentService.saveDepartment(inputDepartment)).
                 thenReturn(department);
 
-        mockMvc.perform(MockMvcRequestBuilders.post()
+        mockMvc.perform(post("/departments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content())
+                .content("{\n" +
+                        "\"departmentName\":\"CA\",\n" +
+                        "\"departmentAddress\":\"TEHRAN3\",\n" +
+                        "\"departmentCode\":\"CA-02\"\n" +
+                        "\n" +
+                        "}\n"))
+                .andExpect(status().isOk());
     }
 
     @Test
-    void fetchDepartmentById() {
+    void fetchDepartmentById() throws Exception {
+
+//         Mockito.when(departmentService.fetchDepartmentByID(1L))
+//                 .thenReturn(department);
+//
+//         mockMvc.perform(get("/departments/1")
+//                 .contentType(MediaType.APPLICATION_JSON))
+//                 .andExpect(status().isOk())
+//                 .andExpect(jsonPath("$.departmentName").value(department.getDepartmentName()));
+
+        Mockito.when(departmentService.fetchDepartmentByID(1L))
+                .thenReturn(department);
+        mockMvc.perform(MockMvcRequestBuilders.get("/departments/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.departmentName").value(department.getDepartmentName()));
+
     }
 }
