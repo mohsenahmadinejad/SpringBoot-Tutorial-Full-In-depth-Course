@@ -1,31 +1,37 @@
-welcome:
-  message: Welcome to daily code buffer!!
 server:
-  port: '8082'
+  port: 8082
+
+spring:
+  profiles:
+    active : dev
 
 ---
-
 spring:
   profiles: dev
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    url: jdbc:mysql://localhost:3306/dcbapp
+    url: jdbc:mysql://localhost:3306/dcbapp-dev
     password: ''
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: 'true'
+welcome:
+  message: 'Welcome to daily code Buffer  '
+
+---
 
 spring:
-  profiles: prod
+  profiles: qa
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    url: jdbc:mysql://localhost:3306/dcbapp
+    url: jdbc:mysql://localhost:3306/dcbapp-qa
     password: ''
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: 'true'
+welcome:
+  message: 'Welcome to daily code Buffer  '
+
 
